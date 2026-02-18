@@ -5,8 +5,7 @@
 # - Consultar el saldo total de puntos de un usuario.
 # - Usar (gastar) puntos.
 # - Mostrar un pequeño historial de puntos ganados y usados.
-#
-# NOTA: Usa solo Python básico (listas, diccionarios, funciones y archivos de texto).
+
 
 ARCHIVO_PUNTOS = "puntos_usuarios.txt"
 
@@ -254,4 +253,5 @@ def menu_puntos_para_usuario(usuario):
         elif opcion == "4":
             print("Volviendo al menú principal...")
         else:
+
             print("Opción no válida. Intenta de nuevo.")
