@@ -55,13 +55,4 @@ El producto está pensado para más de **10,000 usuarios** y soporta integracion
 
 **Velocidad promedio del equipo**: ~43 puntos / sprint
 
-## Tecnologías Utilizadas
-
-- **Frontend**: (probablemente React / Next.js / Vue / Angular — especificar versión)
-- **Mobile**: Responsive design (posible PWA o React Native en futuras iteraciones)
-- **Backend**: (Node.js / Python / PHP / Java — especificar)
-- **Base de datos**: (PostgreSQL / MongoDB / Firebase — especificar)
-- **Autenticación**: (JWT / Auth0 / Firebase Auth — especificar)
-- **Conversión de monedas**: API externa o datos estáticos (pendiente especificar)
-- **Estilo**: Tailwind CSS / Bootstrap / Material UI / etc.
 
