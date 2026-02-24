@@ -1,3 +1,6 @@
+# main.py
+# Punto de entrada del programa "El guerrero del camino".
+# Muestra un menú en consola para gestionar viajes, reservas, usuarios, carros, puntos, proveedores e historial.
 
 from datetime import date
 import time
@@ -10,6 +13,7 @@ import carros
 import puntos
 import proveedores
 import historial
+import utilidades
 
 ARCHIVO_VIAJES = "viajes.txt"
 ARCHIVO_RESERVAS = "reservas.txt"
@@ -33,7 +37,6 @@ def mostrar_menu():
     print("11. Beneficios con proveedores (descuentos por hotel)")
     print("12. Ver historial completo de usuario")
     print("13. Salir")
-    print("=======================================================")
     print("=======================================================")
 
 
@@ -99,7 +102,11 @@ def opcion_ver_detalle_destino(lista_de_viajes):
             "| Precio por persona:", viaje["precio"], "EUR"
         )
 
-    id_viaje = input("Introduce el ID del viaje para ver el detalle: ").strip()
+    id_viaje = utilidades.input_seguro("Introduce el ID del viaje para ver el detalle: ")
+    if id_viaje is None:
+        print("\nOperación cancelada.")
+        return
+    id_viaje = id_viaje.strip()
 
     viaje_encontrado = servicios.buscar_viaje_por_id(lista_de_viajes, id_viaje)
     if viaje_encontrado is None:
@@ -137,10 +144,26 @@ def opcion_agregar_viaje(lista_de_viajes):
     """
     print("\n--- Añadir nuevo viaje ---")
 
-    destino = input("Destino del viaje: ").strip()
-    fecha_inicio = input("Fecha de inicio (dd/mm/aaaa): ").strip()
-    fecha_fin = input("Fecha de fin (dd/mm/aaaa): ").strip()
-    precio_texto = input("Precio por persona (ej: 450.0): ").strip()
+    destino = utilidades.input_seguro("Destino del viaje: ")
+    if destino is None:
+        print("\nOperación cancelada.")
+        return
+    destino = destino.strip()
+    fecha_inicio = utilidades.input_seguro("Fecha de inicio (dd/mm/aaaa): ")
+    if fecha_inicio is None:
+        print("\nOperación cancelada.")
+        return
+    fecha_inicio = fecha_inicio.strip()
+    fecha_fin = utilidades.input_seguro("Fecha de fin (dd/mm/aaaa): ")
+    if fecha_fin is None:
+        print("\nOperación cancelada.")
+        return
+    fecha_fin = fecha_fin.strip()
+    precio_texto = utilidades.input_seguro("Precio por persona (ej: 450.0): ")
+    if precio_texto is None:
+        print("\nOperación cancelada.")
+        return
+    precio_texto = precio_texto.strip()
 
     try:
         precio = float(precio_texto)
@@ -201,7 +224,11 @@ def opcion_agregar_reserva(lista_de_viajes, lista_de_reservas):
             "| Fechas:", viaje["fecha_inicio"], "-", viaje["fecha_fin"]
         )
 
-    id_viaje = input("Introduce el ID del viaje para la reserva: ").strip()
+    id_viaje = utilidades.input_seguro("Introduce el ID del viaje para la reserva: ")
+    if id_viaje is None:
+        print("\nOperación cancelada.")
+        return
+    id_viaje = id_viaje.strip()
 
     viaje_encontrado = servicios.buscar_viaje_por_id(lista_de_viajes, id_viaje)
     if viaje_encontrado is None:
@@ -209,9 +236,17 @@ def opcion_agregar_reserva(lista_de_viajes, lista_de_reservas):
         time.sleep(1)
         return
 
-    nombre_cliente = input("Nombre del cliente: ").strip()
+    nombre_cliente = utilidades.input_seguro("Nombre del cliente: ")
+    if nombre_cliente is None:
+        print("\nOperación cancelada.")
+        return
+    nombre_cliente = nombre_cliente.strip()
 
-    plazas_texto = input("Número de plazas a reservar: ").strip()
+    plazas_texto = utilidades.input_seguro("Número de plazas a reservar: ")
+    if plazas_texto is None:
+        print("\nOperación cancelada.")
+        return
+    plazas_texto = plazas_texto.strip()
     try:
         plazas = int(plazas_texto)
     except ValueError:
@@ -287,7 +322,11 @@ def opcion_generar_texto_redes(lista_de_viajes, lista_de_reservas):
             "| Fechas:", viaje["fecha_inicio"], "-", viaje["fecha_fin"]
         )
 
-    id_viaje = input("Introduce el ID del viaje para generar el texto: ").strip()
+    id_viaje = utilidades.input_seguro("Introduce el ID del viaje para generar el texto: ")
+    if id_viaje is None:
+        print("\nOperación cancelada.")
+        return
+    id_viaje = id_viaje.strip()
 
     viaje_encontrado = servicios.buscar_viaje_por_id(lista_de_viajes, id_viaje)
     if viaje_encontrado is None:
@@ -319,9 +358,18 @@ def opcion_comparar_moneda():
     print("\n--- Comparación de moneda natal con moneda del país de visita ---")
     print("Ejemplos de códigos de moneda: EUR, USD, MXN, ARS, CLP, COP, BRL, GBP, JPY, CNY, CAD, AUD, PEN, BOB, ZAR, MAD, EGP, TRY")
 
-    codigo_origen = input("Introduce el código de tu moneda natal (ej: EUR, MXN): ")
-    codigo_destino = input("Introduce el código de la moneda del país que visitas: ")
-    cantidad_texto = input("Introduce la cantidad en tu moneda natal: ")
+    codigo_origen = utilidades.input_seguro("Introduce el código de tu moneda natal (ej: EUR, MXN): ")
+    if codigo_origen is None:
+        print("\nOperación cancelada.")
+        return
+    codigo_destino = utilidades.input_seguro("Introduce el código de la moneda del país que visitas: ")
+    if codigo_destino is None:
+        print("\nOperación cancelada.")
+        return
+    cantidad_texto = utilidades.input_seguro("Introduce la cantidad en tu moneda natal: ")
+    if cantidad_texto is None:
+        print("\nOperación cancelada.")
+        return
 
     try:
         cantidad = float(cantidad_texto)
@@ -354,9 +402,21 @@ def opcion_registrar_usuario(lista_de_usuarios):
     """
     print("\n--- Registrar nuevo usuario ---")
 
-    nombre = input("Nombre completo del usuario: ").strip()
-    email = input("Correo electrónico: ").strip()
-    telefono = input("Teléfono de contacto: ").strip()
+    nombre = utilidades.input_seguro("Nombre completo del usuario: ")
+    if nombre is None:
+        print("\nOperación cancelada.")
+        return
+    nombre = nombre.strip()
+    email = utilidades.input_seguro("Correo electrónico: ")
+    if email is None:
+        print("\nOperación cancelada.")
+        return
+    email = email.strip()
+    telefono = utilidades.input_seguro("Teléfono de contacto: ")
+    if telefono is None:
+        print("\nOperación cancelada.")
+        return
+    telefono = telefono.strip()
 
     nuevo_usuario = usuarios.generar_nuevo_usuario_en_memoria(
         lista_de_usuarios,
@@ -396,7 +456,11 @@ def opcion_rentar_carro(lista_de_usuarios, lista_de_viajes, lista_de_prestamos):
             "| Email:", usuario["email"]
         )
 
-    id_usuario = input("Introduce el ID del usuario que rentará el carro: ").strip()
+    id_usuario = utilidades.input_seguro("Introduce el ID del usuario que rentará el carro: ")
+    if id_usuario is None:
+        print("\nOperación cancelada.")
+        return
+    id_usuario = id_usuario.strip()
     usuario_encontrado = usuarios.buscar_usuario_por_id(lista_de_usuarios, id_usuario)
     if usuario_encontrado is None:
         print("No existe un usuario con ese ID.")
@@ -411,7 +475,11 @@ def opcion_rentar_carro(lista_de_usuarios, lista_de_viajes, lista_de_prestamos):
             "| Fechas:", viaje["fecha_inicio"], "-", viaje["fecha_fin"]
         )
 
-    id_viaje = input("Introduce el ID del viaje asociado al préstamo del carro: ").strip()
+    id_viaje = utilidades.input_seguro("Introduce el ID del viaje asociado al préstamo del carro: ")
+    if id_viaje is None:
+        print("\nOperación cancelada.")
+        return
+    id_viaje = id_viaje.strip()
     viaje_encontrado = servicios.buscar_viaje_por_id(lista_de_viajes, id_viaje)
     if viaje_encontrado is None:
         print("No existe un viaje con ese ID.")
@@ -432,7 +500,10 @@ def opcion_rentar_carro(lista_de_usuarios, lista_de_viajes, lista_de_prestamos):
     for marca in carros.MARCAS_CARRO:
         print("- ", marca)
 
-    nombre_marca = input("Escribe la marca de carro que quieres rentar: ")
+    nombre_marca = utilidades.input_seguro("Escribe la marca de carro que quieres rentar: ")
+    if nombre_marca is None:
+        print("\nOperación cancelada.")
+        return
 
     precio_base = carros.obtener_precio_base_marca(nombre_marca)
     if precio_base is None:
@@ -440,8 +511,14 @@ def opcion_rentar_carro(lista_de_usuarios, lista_de_viajes, lista_de_prestamos):
         time.sleep(1)
         return
 
-    dias_previstos_texto = input("Número de días de préstamo acordados: ")
-    dias_reales_texto = input("Número de días reales de uso del carro: ")
+    dias_previstos_texto = utilidades.input_seguro("Número de días de préstamo acordados: ")
+    if dias_previstos_texto is None:
+        print("\nOperación cancelada.")
+        return
+    dias_reales_texto = utilidades.input_seguro("Número de días reales de uso del carro: ")
+    if dias_reales_texto is None:
+        print("\nOperación cancelada.")
+        return
 
     try:
         dias_previstos = int(dias_previstos_texto)
@@ -511,7 +588,11 @@ def opcion_puntos_usuarios(lista_de_usuarios):
             "| Email:", usuario["email"]
         )
 
-    id_usuario = input("Introduce el ID del usuario para gestionar sus puntos: ").strip()
+    id_usuario = utilidades.input_seguro("Introduce el ID del usuario para gestionar sus puntos: ")
+    if id_usuario is None:
+        print("\nOperación cancelada.")
+        return
+    id_usuario = id_usuario.strip()
     usuario_encontrado = usuarios.buscar_usuario_por_id(lista_de_usuarios, id_usuario)
     if usuario_encontrado is None:
         print("No existe un usuario con ese ID.")
@@ -541,7 +622,11 @@ def opcion_beneficios_proveedores(lista_de_usuarios, lista_de_viajes, lista_de_r
             "| Email:", usuario["email"]
         )
 
-    id_usuario = input("Introduce el ID del usuario para verificar beneficios con proveedores: ").strip()
+    id_usuario = utilidades.input_seguro("Introduce el ID del usuario para verificar beneficios con proveedores: ")
+    if id_usuario is None:
+        print("\nOperación cancelada.")
+        return
+    id_usuario = id_usuario.strip()
     usuario_encontrado = usuarios.buscar_usuario_por_id(lista_de_usuarios, id_usuario)
     if usuario_encontrado is None:
         print("No existe un usuario con ese ID.")
@@ -583,7 +668,11 @@ def opcion_historial_usuario(
             "| Email:", usuario["email"]
         )
 
-    id_usuario = input("Introduce el ID del usuario para ver su historial: ").strip()
+    id_usuario = utilidades.input_seguro("Introduce el ID del usuario para ver su historial: ")
+    if id_usuario is None:
+        print("\nOperación cancelada.")
+        return
+    id_usuario = id_usuario.strip()
     usuario_encontrado = usuarios.buscar_usuario_por_id(lista_de_usuarios, id_usuario)
     if usuario_encontrado is None:
         print("No existe un usuario con ese ID.")
@@ -610,9 +699,9 @@ def main():
     lista_de_viajes = datos.leer_viajes(ARCHIVO_VIAJES)
     lista_de_reservas = datos.leer_reservas(ARCHIVO_RESERVAS)
     lista_de_usuarios = usuarios.leer_usuarios()
-    lista_de_prestamos_carro = []          # Solo en memoria
-    lista_movimientos_puntos = []          # Solo en memoria (rellénalo desde puntos.py si quieres)
-    lista_beneficios_proveedores = []      # Solo en memoria (rellénalo desde proveedores.py si quieres)
+    lista_de_prestamos_carro = []         
+    lista_movimientos_puntos = []          
+    lista_beneficios_proveedores = []      
 
     print("Viajes cargados:", len(lista_de_viajes))
     print("Reservas cargadas:", len(lista_de_reservas))
@@ -623,61 +712,76 @@ def main():
 
     while opcion != "13":
         mostrar_menu()
-        opcion = input("Elige una opción (1-13): ").strip()
+        try:
+            opcion = utilidades.input_seguro("Elige una opción (1-13): ")
+        except (KeyboardInterrupt, EOFError):
+            print("\n\nPrograma interrumpido. Saliendo...")
+            break
+        if opcion is None:
+            print("\nPrograma interrumpido. Saliendo...")
+            break
+        opcion = opcion.strip()
 
-        if opcion == "1":
-            mostrar_viajes_agrupados(lista_de_viajes, lista_de_reservas)
-            time.sleep(1)
-        elif opcion == "2":
-            opcion_agregar_viaje(lista_de_viajes)
-            time.sleep(1)
-        elif opcion == "3":
-            opcion_agregar_reserva(lista_de_viajes, lista_de_reservas)
-            time.sleep(1)
-        elif opcion == "4":
-            opcion_ver_detalle_destino(lista_de_viajes)
-            time.sleep(1)
-        elif opcion == "5":
-            lista_de_viajes, lista_de_reservas = opcion_limpiar_viajes(
-                lista_de_viajes,
-                lista_de_reservas
-            )
-            time.sleep(1)
-        elif opcion == "6":
-            opcion_generar_texto_redes(lista_de_viajes, lista_de_reservas)
-            time.sleep(1)
-        elif opcion == "7":
-            opcion_comparar_moneda()
-            time.sleep(1)
-        elif opcion == "8":
-            opcion_registrar_usuario(lista_de_usuarios)
-            time.sleep(1)
-        elif opcion == "9":
-            opcion_rentar_carro(lista_de_usuarios, lista_de_viajes, lista_de_prestamos_carro)
-            time.sleep(1)
-        elif opcion == "10":
-            opcion_puntos_usuarios(lista_de_usuarios)
-            time.sleep(1)
-        elif opcion == "11":
-            opcion_beneficios_proveedores(lista_de_usuarios, lista_de_viajes, lista_de_reservas)
-            time.sleep(1)
-        elif opcion == "12":
-            opcion_historial_usuario(
-                lista_de_usuarios,
-                lista_de_viajes,
-                lista_de_reservas,
-                lista_de_prestamos_carro,
-                lista_movimientos_puntos,
-                lista_beneficios_proveedores
-            )
-            time.sleep(1)
-        elif opcion == "13":
-            print("Saliendo del sistema. ¡Hasta pronto!")
-            time.sleep(1)
-        else:
-            print("Opción no válida. Intenta de nuevo.")
+        try:
+            if opcion == "1":
+                mostrar_viajes_agrupados(lista_de_viajes, lista_de_reservas)
+                time.sleep(1)
+            elif opcion == "2":
+                opcion_agregar_viaje(lista_de_viajes)
+                time.sleep(1)
+            elif opcion == "3":
+                opcion_agregar_reserva(lista_de_viajes, lista_de_reservas)
+                time.sleep(1)
+            elif opcion == "4":
+                opcion_ver_detalle_destino(lista_de_viajes)
+                time.sleep(1)
+            elif opcion == "5":
+                lista_de_viajes, lista_de_reservas = opcion_limpiar_viajes(
+                    lista_de_viajes,
+                    lista_de_reservas
+                )
+                time.sleep(1)
+            elif opcion == "6":
+                opcion_generar_texto_redes(lista_de_viajes, lista_de_reservas)
+                time.sleep(1)
+            elif opcion == "7":
+                opcion_comparar_moneda()
+                time.sleep(1)
+            elif opcion == "8":
+                opcion_registrar_usuario(lista_de_usuarios)
+                time.sleep(1)
+            elif opcion == "9":
+                opcion_rentar_carro(lista_de_usuarios, lista_de_viajes, lista_de_prestamos_carro)
+                time.sleep(1)
+            elif opcion == "10":
+                opcion_puntos_usuarios(lista_de_usuarios)
+                time.sleep(1)
+            elif opcion == "11":
+                opcion_beneficios_proveedores(lista_de_usuarios, lista_de_viajes, lista_de_reservas)
+                time.sleep(1)
+            elif opcion == "12":
+                opcion_historial_usuario(
+                    lista_de_usuarios,
+                    lista_de_viajes,
+                    lista_de_reservas,
+                    lista_de_prestamos_carro,
+                    lista_movimientos_puntos,
+                    lista_beneficios_proveedores
+                )
+                time.sleep(1)
+            elif opcion == "13":
+                print("Saliendo del sistema. ¡Hasta pronto!")
+                time.sleep(1)
+            else:
+                print("Opción no válida. Intenta de nuevo.")
+                time.sleep(1)
+        except (KeyboardInterrupt, EOFError):
+            print("\n\nOperación cancelada. Volviendo al menú principal...")
             time.sleep(1)
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except (KeyboardInterrupt, EOFError):
+        print("\n\nPrograma interrumpido por el usuario.")
